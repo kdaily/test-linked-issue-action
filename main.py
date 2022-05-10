@@ -38,13 +38,16 @@ query getLinkedPrs($owner: String!, $name: String!, $number: Int!) {
 
 LINKED_PR_QUERY = gql(LINKED_PR_QUERY_STR)
 
+
 def make_params(owner, repo, number):
     return({"owner": owner, "name": repo, "number": number})
 
+  
 def execute_query(client, query, params):
     result = client.execute(query, variable_values=params)
     return(result)
 
+  
 def parse_results(results):
     """Return a list of issue numbers connected to the PR.
     
@@ -55,7 +58,7 @@ def parse_results(results):
     timelineItems = results['repository']['issue']['timelineItems']
     nodes = timelineItems['nodes']
 
-    #issue numbers of connected events
+    # issue numbers of connected events
     conn_pr_ids = set([node['subject']['number'] for node in nodes if node['__typename'] == 'ConnectedEvent'])
 
     # issue numbers of disconnected events
@@ -63,6 +66,7 @@ def parse_results(results):
     
     return list(conn_pr_ids.difference(disconn_pr_ids))
 
+  
 def main():
 
     my_input_token = os.environ["INPUT_GITHUB_TOKEN"]
@@ -86,18 +90,6 @@ def main():
     linked_prs = parse_results(results)
 
     print(f"::set-output name=linkedPrs::{linked_prs}")
-
-if __name__ == "__main__":
-    main()
-
-
-
-def main():
-
-    my_output = f"Hello {my_input}"
-
-    print(f"::set-output name=myOutput::{my_output}")
-
 
 if __name__ == "__main__":
     main()
