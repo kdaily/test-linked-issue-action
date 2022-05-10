@@ -58,10 +58,10 @@ def parse_results(results):
     timelineItems = results['repository']['issue']['timelineItems']
     nodes = timelineItems['nodes']
 
-    # issue numbers of connected events
+    # PR numbers of connected events
     conn_pr_ids = set([node['subject']['number'] for node in nodes if node['__typename'] == 'ConnectedEvent'])
 
-    # issue numbers of disconnected events
+    # PR numbers of disconnected events
     disconn_pr_ids = set([node['subject']['number'] for node in nodes if node['__typename'] == 'DisconnectedEvent'])
 
     return list(conn_pr_ids.difference(disconn_pr_ids))
