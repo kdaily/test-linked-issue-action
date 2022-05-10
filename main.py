@@ -42,15 +42,15 @@ LINKED_PR_QUERY = gql(LINKED_PR_QUERY_STR)
 def make_params(owner, repo, number):
     return({"owner": owner, "name": repo, "number": number})
 
-  
+
 def execute_query(client, query, params):
     result = client.execute(query, variable_values=params)
     return(result)
 
-  
+
 def parse_results(results):
     """Return a list of issue numbers connected to the PR.
-    
+
     Only include those that haven't been disconnected.
 
     """
@@ -63,10 +63,10 @@ def parse_results(results):
 
     # issue numbers of disconnected events
     disconn_pr_ids = set([node['subject']['number'] for node in nodes if node['__typename'] == 'DisconnectedEvent'])
-    
+
     return list(conn_pr_ids.difference(disconn_pr_ids))
 
-  
+
 def main():
 
     my_input_token = os.environ["INPUT_GITHUB_TOKEN"]
@@ -83,10 +83,10 @@ def main():
 
     # Create a GraphQL client using the defined transport
     client = Client(transport=transport, fetch_schema_from_transport=True)
-    
+
     params = make_params(owner=my_input_owner, repo=my_input_repo, number=my_input_number)
     results = execute_query(client=client, query=LINKED_PR_QUERY, params=params)
-    
+
     linked_prs = parse_results(results)
 
     print(f"::set-output name=linkedPrs::{linked_prs}")
