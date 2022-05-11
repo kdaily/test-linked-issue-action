@@ -71,7 +71,7 @@ def main():
 
     my_input_token = os.environ["INPUT_GITHUB_TOKEN"]
     my_input_owner = os.environ["INPUT_OWNER"]
-    my_input_repo = os.environ["INPUT_OWNER"]
+    my_input_repo = os.environ["INPUT_REPO"]
     my_input_number = int(os.environ["INPUT_NUMBER"])
 
     headers={'Authorization': f'bearer {os.environ["INPUT_GITHUB_TOKEN"]}',
